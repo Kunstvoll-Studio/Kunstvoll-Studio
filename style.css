@@ -29,7 +29,7 @@ header h1 {
 }
 
 header h_name {
-    background-color: rgba(0, 0, 0, 0.5); /* Hintergrundfarbe der Überschrift mit Transparenz */
+    background-color: rgba(0, 0, 0, 0); /* Hintergrundfarbe der Überschrift mit Transparenz */
     padding: 5px; /* Abstand um die Überschrift */
 }
 
