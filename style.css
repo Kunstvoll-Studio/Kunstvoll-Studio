@@ -28,6 +28,11 @@ header h1 {
     padding: 10px; /* Abstand um die Überschrift */
 }
 
+header h_name {
+    background-color: rgba(0, 0, 0, 0.5); /* Hintergrundfarbe der Überschrift mit Transparenz */
+    padding: 5px; /* Abstand um die Überschrift */
+}
+
 .hero p {
     line-height: 1.8; /* Ändere den Zeilenabstand nach Bedarf */
     margin-bottom: 20px; /* Optional: Abstand zwischen den Absätzen */
