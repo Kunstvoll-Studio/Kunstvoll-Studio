@@ -38,6 +38,11 @@ header h_name {
     margin-bottom: 20px; /* Optional: Abstand zwischen den Absätzen */
 }
 
+.hero h2 {
+    line-height: 1.8; /* Ändere den Zeilenabstand nach Bedarf */
+    margin-bottom: 10px; /* Optional: Abstand zwischen den Absätzen */
+}
+
 /*
 .gradient-text {
     font-size: 48px;
