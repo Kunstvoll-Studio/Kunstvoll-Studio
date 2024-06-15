@@ -34,13 +34,13 @@ header h_name {
 }
 
 .hero p {
-    line-height: 1.0; /* Ändere den Zeilenabstand nach Bedarf */
+    line-height: 1.8; /* Ändere den Zeilenabstand nach Bedarf */
     margin-bottom: 20px; /* Optional: Abstand zwischen den Absätzen */
 }
 
 .hero h2 {
-    line-height: 1.8; /* Ändere den Zeilenabstand nach Bedarf */
-    margin-bottom: 5px; /* Optional: Abstand zwischen den Absätzen */
+    line-height: 1.0; /* Ändere den Zeilenabstand nach Bedarf */
+    margin-bottom: 10px; /* Optional: Abstand zwischen den Absätzen */
 }
 
 /*
