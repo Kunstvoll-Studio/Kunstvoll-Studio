@@ -34,7 +34,7 @@ header h_name {
 }
 
 .hero p {
-    line-height: 1.8; /* Ändere den Zeilenabstand nach Bedarf */
+    line-height: 1.0; /* Ändere den Zeilenabstand nach Bedarf */
     margin-bottom: 20px; /* Optional: Abstand zwischen den Absätzen */
 }
 
