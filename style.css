@@ -21,11 +21,20 @@ header {
     color: #fff;
     padding: 50px 0;
     text-align: center;
+    position: relative; /* Für das Overlay */
 }
-
+/*
 header h1 {
     background-color: rgba(0, 0, 0, 0.5); /* Hintergrundfarbe der Überschrift mit Transparenz */
-    padding: 10px; /* Abstand um die Überschrift */
+  /*  padding: 10px; /* Abstand um die Überschrift *//*
+}
+*/
+header h1 {
+    background-color: rgba(0, 0, 0, 0.7); /* Dunkles Overlay für die Überschrift */
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 80%; /* Begrenze die Breite der Überschrift */
+    margin: 0 auto;
 }
 
 header h_name {
