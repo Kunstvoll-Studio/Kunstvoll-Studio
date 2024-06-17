@@ -4,7 +4,7 @@ body {
     padding: 0;
     background-color: #f0f0f0;
     color: #333;
-    line-height: 0.6;
+    line-height: 1.6;
 }
 /*
 header {
@@ -244,6 +244,7 @@ nav a:hover {
     opacity: 0.9;
 }
 */
+/*
 .text {
     color: white;
     font-size: 20px;
@@ -251,6 +252,7 @@ nav a:hover {
     bottom: 10px;
     left: 20px;
 }
+*/
 /*
 .contact {
     background-color: white;
@@ -295,7 +297,10 @@ nav a:hover {
     background-color: #2a5298;
 }
 */
-
+.text {
+    text-align: center;
+    padding: 10px;
+}
 
 
 footer {
