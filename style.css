@@ -31,7 +31,7 @@ header h1 {
 */
 header h1 {
     background-color: rgba(0, 0, 0, 0.7); /* Dunkles Overlay für die Überschrift */
-    padding: 20px;
+    padding: 10px;
     border-radius: 10px;
     max-width: 80%; /* Begrenze die Breite der Überschrift */
     margin: 0 auto;
