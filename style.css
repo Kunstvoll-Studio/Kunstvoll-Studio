@@ -1,0 +1,319 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+    color: #333;
+    line-height: 1.6;
+}
+/*
+header {
+    background: linear-gradient(90deg, #1e725a, #2a5298);
+    color: white;
+    padding: 7px 0;
+    text-align: center;
+    font-size: 2.0em;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+*/
+header {
+    background: url('https://raw.githubusercontent.com/LukasKnt/Kunstvoll-studio/main/Ueberschrifthintergrund.jpg') no-repeat center center/cover; 
+    color: #fff;
+    padding: 50px 0;
+    text-align: center;
+    position: relative; /* Für das Overlay */
+}
+/*
+header h1 {
+    background-color: rgba(0, 0, 0, 0.5); /* Hintergrundfarbe der Überschrift mit Transparenz */
+  /*  padding: 10px; /* Abstand um die Überschrift *//*
+}
+*/
+header h1 {
+    background-color: rgba(0, 0, 0, 0.7); /* Dunkles Overlay für die Überschrift */
+    padding: 10px;
+    border-radius: 10px;
+    max-width: 80%; /* Begrenze die Breite der Überschrift */
+    margin: 0 auto;
+}
+
+header h_name {
+    background-color: rgba(0, 0, 0, 0); /* Hintergrundfarbe der Überschrift mit Transparenz */
+    padding: 5px; /* Abstand um die Überschrift */
+}
+
+.hero p {
+    line-height: 1.8; /* Ändere den Zeilenabstand nach Bedarf */
+    margin-bottom: 20px; /* Optional: Abstand zwischen den Absätzen */
+}
+
+.hero h2 {
+    line-height: 1.0; /* Ändere den Zeilenabstand nach Bedarf */
+    margin-bottom: 10px; /* Optional: Abstand zwischen den Absätzen */
+}
+
+/*
+.gradient-text {
+    font-size: 48px;
+    font-weight: bold;
+    background: url('https://github.com/LukasKnt/Kunstvoll-studio/blob/main/Ueberschrifthintergrund.jpg') repeat;
+    -webkit-background-clip: text;
+    color: transparent;
+    background-clip: text;
+    display: inline-block;
+}
+*/
+nav {
+    display: flex;
+    justify-content: center;
+    background-color: #2a5298;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+nav a {
+    color: white;
+    padding: 15px 20px;
+    text-decoration: none;
+    font-size: 1.2em;
+    transition: background 1.0s;
+}
+
+nav a:hover {
+    background-color: #1e3c72;
+}
+
+.about p {
+    line-height: 1.8; /* Ändere den Zeilenabstand nach Bedarf */
+    margin-bottom: 20px; /* Optional: Abstand zwischen den Absätzen */
+}
+
+.container {
+    padding: 40px 20px;
+}
+
+.hero {
+    position: relative;
+    color: rgb(72, 72, 72);
+    text-align: center;
+    padding: 50px 20px;
+    border-radius: 30px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px;
+}
+/*
+.slider {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 10px;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.slides {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.slide {
+    min-width: 100%;
+    transition: opacity 1s ease-in-out;
+}
+
+.slide img {
+    width: 100%;
+    border-radius: 10px;
+}
+*/
+
+.slider {
+    position: relative;
+    width: 100%;
+    height: 500px; /* Set the desired height for the hero section */
+    overflow: hidden;
+}
+
+.slides {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.slide {
+    min-width: 100%;
+    height: 500px; /* Same as the .slider height */
+}
+
+.slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures the image covers the whole area without distorting */
+}
+
+/* CSS für das modale Popup */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    padding-top: 50px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.9); /* Transparente Hintergrundfarbe */
+}
+
+.modal-content {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 700px;
+    background-color: white; /* Weißer Hintergrund für das Bild */
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); /* Schatten für das Popup */
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 25px;
+    color: rgba(121, 121, 121, 0.674); /* Farbe für das Schließen-Symbol */
+    font-size: 35px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.close:hover,
+.close:focus {
+    color: #86868665;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal img {
+    width: 100%;
+    height: auto;
+}
+
+
+
+.gallery {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(101, 101, 101, 0.589);
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.gallery-item {
+    position: relative;
+}
+
+.gallery img {
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.529);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.gallery img:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 16px rgba(73, 73, 73, 0.404);
+}
+
+.gallery:hover .overlay {
+    display: block; /* oder 'inline', 'inline-block', je nachdem, was Sie bevorzugen */
+}
+/*
+.overlay {
+    position: absolute;
+    bottom: 0;
+    background: rgba(243, 2, 2, 0.7);
+    color: white;
+    width: 100%;
+    height: 0;
+    transition: .5s ease;
+    overflow: hidden;
+    border-radius: 0 0 10px 10px;
+}
+
+.gallery-item:hover .overlay {
+    height: 100%;
+    opacity: 0.9;
+}
+*/
+/*
+.text {
+    color: white;
+    font-size: 20px;
+    position: absolute;
+    bottom: 10px;
+    left: 20px;
+}
+*/
+/*
+.contact {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.contact-form {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.contact-form input,
+.contact-form textarea {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+    transition: border-color 0.3s;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+    border-color: #1e3c72;
+}
+
+.contact-form button {
+    background-color: #451e72ac;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background 0.3s;
+}
+
+.contact-form button:hover {
+    background-color: #2a5298;
+}
+*/
+.text {
+    text-align: center;
+    padding: 10px;
+}
+
+
+footer {
+    background-color: #52982a;
+    color: white;
+    text-align: center;
+    padding: 1px 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+}
