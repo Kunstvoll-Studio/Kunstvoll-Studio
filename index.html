@@ -394,21 +394,6 @@
 
         showSlide(currentIndex);
         setInterval(nextSlide, 3000);
-
-        // Gallery hover effect
-        const items = document.querySelectorAll('.gallery-item');
-        items.forEach(item => {
-            item.addEventListener('mouseover', () => {
-                const overlay = item.querySelector('.overlay');
-                overlay.style.opacity = 1;
-                overlay.style.transition = 'opacity 0.3s';
-            });
-            item.addEventListener('mouseout', () => {
-                const overlay = item.querySelector('.overlay');
-                overlay.style.opacity = 0;
-                overlay.style.transition = 'opacity 0.3s';
-            });
-        });
     });
 
 </script>
