@@ -66,55 +66,27 @@
 
     
 
-    // Reihenfolge der Bilder in der Galerie.
-    // Format: "Titel__BREITExHÖHExTIEFE.ext" — Titel und Maße werden daraus geparst.
-    // Bilder ohne "__BxHxT" werden ohne Overlay angezeigt.
-    const galleryImages = [
-        "La Belle__100x120x4.JPG",
-        "Naakt #1__60x80x2.jpg",
-        "Gegen den Strom #1__70x70x1.jpg",
-        "Strudel, auf anderen wegen__120x100x4.jpg",
-        "Keramikschalen__100x70x1.jpg",
-        "Boa__120x100x4.jpg",
-        "Panorama #1__70x100x2.jpg",
-        "Corona #1__60x90x1.jpg",
-        "Skyline #1__100x100x1.jpg",
-        "Vasen #1__50x70x1.jpg",
-        "Springtimes #1__50x70x1.jpg",
-        "Beduine__60x80x1.jpg",
-        "Bottles #1__60x80x1.jpg",
-        "IMG_0972.jpg",
-        "China #1__50x60x1.jpg",
-        "Fackelzug__50x60x1.jpg",
-        "IMG_0975.jpg",
-        "IMG_0976.jpg",
-        "IMG_0978.jpg",
-        "IMG_0980.jpg",
-        "Welle__50x50x1.jpg",
-        "Meer__50x50x1.jpg",
-        "Natur - Blüten #1__50x50x1.jpg",
-        "Polarlichter #1__40x40x1.jpg",
-        "Granatapfel__40x40x1.jpg",
-        "Niemandsland #2__40x40x1.jpg",
-        "Niemandsland #1__50x50x1.jpg",
-        "Natur - Kälte #1__50x50x1.jpg",
-        "Niemandsland #3__50x50x1.jpg",
-        "Natur - Regen #1__50x50x1.jpg",
-        "Natur - Wald #1__50x50x1.jpg",
-        "Aqua Nullius 2.1__100x100x4.jpg",
-        "Niemandsland 2.1__100x100x4.jpg",
-        "Hortensien #1__80x100x1.jpg",
-        "IMG_0996.jpg",
-        "Happy fish__70x100x2.jpg",
-        "IMG_0936.jpg",
-        "Flou__100x120x4.jpg",
-        "Niemandsland 2.2__100x100x4.jpeg",
-        "Sailing #1__140x70x4.JPG",
-        "Niemandsland 2.3__100x100x4.jpg",
-        "Niemandsland 2.4__100x100x4.jpg",
-        "Aqua Nullius 2.2__100x100x4.jpg",
-        "Gegen den Strom #1__140x70x4.jpg"
-    ];
+    // Galerie wird zur Laufzeit aus dem Repository-Verzeichnis geladen
+    // (GitHub Contents API). Diese Dateien werden nicht angezeigt:
+    const EXCLUDE_FILES = new Set([
+        "hero1.jpg",
+        "hero2.jpg",
+        "hero3.jpg",
+        "favicon.png",
+        "Ueberschrifthintergrund.jpg"
+    ]);
+    const IMAGE_EXT_RE = /\.(jpe?g|png|gif|webp)$/i;
+    const REPO_CONTENTS_URL = "https://api.github.com/repos/Kunstvoll-Studio/Kunstvoll-Studio/contents/";
+
+    async function loadImageList() {
+        const response = await fetch(REPO_CONTENTS_URL);
+        if (!response.ok) throw new Error("GitHub API " + response.status);
+        const items = await response.json();
+        return items
+            .filter(item => item.type === "file")
+            .map(item => item.name)
+            .filter(name => IMAGE_EXT_RE.test(name) && !EXCLUDE_FILES.has(name));
+    }
 
     function parseFilename(filename) {
         const base = filename.replace(/\.[^.]+$/, '');
@@ -125,9 +97,18 @@
         return { title: base.slice(0, sep), dims: dims + ' cm' };
     }
 
-    function buildGallery() {
+    async function buildGallery() {
         const grid = document.querySelector('.gallery-grid');
         if (!grid) return;
+
+        let galleryImages;
+        try {
+            galleryImages = await loadImageList();
+        } catch (err) {
+            console.error("Galerie konnte nicht geladen werden:", err);
+            return;
+        }
+
         const fragment = document.createDocumentFragment();
         galleryImages.forEach(filename => {
             const { title, dims } = parseFilename(filename);
