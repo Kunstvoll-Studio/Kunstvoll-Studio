@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <script src="i18n.js" defer></script>
+    <script src="effects.js" defer></script>
 </head>
 <body>
 
@@ -36,6 +37,7 @@
                 <div class="slide"><img src="hero2.jpg" alt="Banner 2"></div>
                 <div class="slide"><img src="hero3.jpg" alt="Banner 3"></div>
             </div>
+            <div class="slider-dots"></div>
         </div>
         <h2 data-i18n="heroTitle">Entdecken Sie die Kunst der Kreativität</h2>
         <p data-i18n="heroText">Entdecken Sie meine Sammlung von Kunstwerken, die Realismus mit abstrakten Elementen vereinen.</p>
@@ -45,7 +47,7 @@
 
 <div class="container" id="gallery">
     <section class="gallery">
-        <h2 data-i18n="gallery">Galerie</h2>
+        <h2 class="reveal" data-i18n="gallery">Galerie</h2>
         <div class="gallery-grid"></div>
     </section>
 </div>
@@ -54,24 +56,60 @@
 </footer>
 
 <div id="myModal" class="modal">
-    <span class="close" onclick="closeModal()">&times;</span>
-    <img class="modal-content" id="img01">
+    <div class="modal-counter" id="modalCounter"></div>
+    <span class="close" onclick="closeModal()" onkeydown="if(event.key==='Enter')closeModal()" data-i18n-aria="closeImage" role="button" tabindex="0">&times;</span>
+    <button type="button" class="modal-nav modal-prev" onclick="stepModal(-1)" data-i18n-aria="prevImage">&#10094;</button>
+    <img class="modal-content" id="img01" alt="">
+    <button type="button" class="modal-nav modal-next" onclick="stepModal(1)" data-i18n-aria="nextImage">&#10095;</button>
+    <div class="modal-caption" id="modalCaption"></div>
 </div>
 
 <script>
-    function showImage(imgElement) {
-        var modal = document.getElementById("myModal");
-        var modalImg = document.getElementById("img01");
-        modal.style.display = "block";
-        modalImg.src = imgElement.src;
+    // Lightbox mit Navigation: galleryData wird in buildGallery gefüllt,
+    // sodass man mit Pfeilen/Pfeiltasten/Wischen durch alle Werke blättern kann
+    const galleryData = []; // { src, title, dims }
+    let modalIndex = -1;
+
+    function renderModal() {
+        const entry = galleryData[modalIndex];
+        if (!entry) return;
+        const modalImg = document.getElementById("img01");
+        modalImg.src = entry.src;
+        modalImg.alt = entry.title || "";
+
+        const caption = document.getElementById("modalCaption");
+        caption.textContent = "";
+        if (entry.title) {
+            caption.appendChild(document.createTextNode(entry.title));
+            const dims = document.createElement("span");
+            dims.className = "dims";
+            dims.textContent = " · " + entry.dims;
+            caption.appendChild(dims);
+        }
+
+        document.getElementById("modalCounter").textContent =
+            (modalIndex + 1) + " / " + galleryData.length;
+    }
+
+    function openModal(index) {
+        modalIndex = index;
+        renderModal();
+        document.getElementById("myModal").classList.add("open");
+        document.body.style.overflow = "hidden"; // Seite dahinter nicht scrollbar
     }
 
     function closeModal() {
-        var modal = document.getElementById("myModal");
-        modal.style.display = "none";
+        document.getElementById("myModal").classList.remove("open");
+        document.body.style.overflow = "";
     }
 
-    
+    function stepModal(direction) {
+        if (!galleryData.length) return;
+        modalIndex = (modalIndex + direction + galleryData.length) % galleryData.length;
+        renderModal();
+    }
+
+
 
     // Galerie wird zur Laufzeit aus dem Repository-Verzeichnis geladen
     // (GitHub Contents API). Diese Dateien werden nicht angezeigt:
@@ -164,23 +202,39 @@
         }
 
         const fragment = document.createDocumentFragment();
-        galleryImages.forEach(filename => {
+        galleryImages.forEach((filename, index) => {
             const { title, dims } = parseFilename(filename);
+            const src = encodeURIComponent(filename);
+            galleryData.push({ src, title, dims });
 
             const item = document.createElement('div');
-            item.className = 'gallery-item';
+            item.className = 'gallery-item reveal';
+            // Gestaffeltes Einblenden: Nachbarn erscheinen kurz nacheinander
+            item.style.transitionDelay = (index % 4) * 70 + 'ms';
 
             // Bild und Badge liegen in einem gemeinsamen Wrapper,
             // damit beide beim Hovern zusammen kippen und skalieren
             const media = document.createElement('div');
             media.className = 'gallery-media';
 
+            // Seitenverhältnis aus den Werkmaßen (z. B. 100x70):
+            // der Platzhalter hat schon die richtige Größe, nichts springt
+            if (dims) {
+                const [w, h] = dims.split('x');
+                media.style.aspectRatio = w + ' / ' + h;
+            }
+
             const img = document.createElement('img');
-            img.src = encodeURIComponent(filename);
+            img.src = src;
             img.alt = title || filename;
             img.loading = 'lazy';
             img.decoding = 'async';
-            img.addEventListener('click', () => showImage(img));
+            img.addEventListener('click', () => openModal(index));
+            // Schimmer-Platzhalter beenden, sobald das Bild da ist
+            const markLoaded = () => media.classList.add('loaded');
+            img.addEventListener('load', markLoaded);
+            img.addEventListener('error', markLoaded);
+            if (img.complete && img.naturalWidth) markLoaded();
             media.appendChild(img);
 
             if (UNAVAILABLE_FILES.has(filename)) {
@@ -210,28 +264,83 @@
             fragment.appendChild(item);
         });
         grid.appendChild(fragment);
+
+        // Einblenden beim Scrollen (observeReveal kommt aus effects.js)
+        if (typeof observeReveal === 'function') {
+            grid.querySelectorAll('.gallery-item').forEach(observeReveal);
+        } else {
+            grid.querySelectorAll('.gallery-item').forEach(el => el.classList.add('visible'));
+        }
     }
 
     document.addEventListener("DOMContentLoaded", function() {
         buildGallery();
 
-        // Slider
+        // Hero-Slider: weiche Überblendung, Ken-Burns-Zoom (style.css),
+        // Punkte-Navigation und Pause, solange die Maus darüber steht
+        const slider = document.querySelector('.slider');
         const slides = document.querySelectorAll('.slide');
-        let currentIndex = 0;
+        const dotsWrap = document.querySelector('.slider-dots');
+        if (slider && slides.length) {
+            let currentIndex = 0;
+            let timer = null;
 
-        function showSlide(index) {
-            slides.forEach((slide, i) => {
-                slide.style.display = i === index ? 'block' : 'none';
+            const dots = Array.from(slides, (_, i) => {
+                const dot = document.createElement('button');
+                dot.type = 'button';
+                dot.setAttribute('aria-label', 'Slide ' + (i + 1));
+                dot.addEventListener('click', () => { goToSlide(i); restartTimer(); });
+                dotsWrap.appendChild(dot);
+                return dot;
             });
+
+            function goToSlide(index) {
+                slides[currentIndex].classList.remove('active');
+                dots[currentIndex].classList.remove('active');
+                currentIndex = index;
+                slides[currentIndex].classList.add('active');
+                dots[currentIndex].classList.add('active');
+            }
+
+            function nextSlide() {
+                goToSlide((currentIndex + 1) % slides.length);
+            }
+
+            function restartTimer() {
+                clearInterval(timer);
+                timer = setInterval(nextSlide, 5000);
+            }
+
+            goToSlide(0);
+            restartTimer();
+            slider.addEventListener('mouseenter', () => clearInterval(timer));
+            slider.addEventListener('mouseleave', restartTimer);
         }
 
-        function nextSlide() {
-            currentIndex = (currentIndex + 1) % slides.length;
-            showSlide(currentIndex);
-        }
+        // Lightbox: Klick auf den dunklen Hintergrund schließt,
+        // Pfeiltasten blättern, Escape schließt, Wischen am Handy blättert
+        const modal = document.getElementById("myModal");
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
 
-        showSlide(currentIndex);
-        setInterval(nextSlide, 3000);
+        document.addEventListener('keydown', (e) => {
+            if (!modal.classList.contains('open')) return;
+            if (e.key === 'Escape') closeModal();
+            else if (e.key === 'ArrowLeft') stepModal(-1);
+            else if (e.key === 'ArrowRight') stepModal(1);
+        });
+
+        let touchStartX = null;
+        modal.addEventListener('touchstart', (e) => {
+            touchStartX = e.touches[0].clientX;
+        }, { passive: true });
+        modal.addEventListener('touchend', (e) => {
+            if (touchStartX === null) return;
+            const deltaX = e.changedTouches[0].clientX - touchStartX;
+            if (Math.abs(deltaX) > 50) stepModal(deltaX > 0 ? -1 : 1);
+            touchStartX = null;
+        }, { passive: true });
     });
 
 </script>

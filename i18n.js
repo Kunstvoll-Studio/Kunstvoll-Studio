@@ -10,6 +10,10 @@ const TRANSLATIONS = {
         heroText: "Entdecken Sie meine Sammlung von Kunstwerken, die Realismus mit abstrakten Elementen vereinen.",
         contact: "Kontakt",
         unavailable: "Nicht mehr erhältlich",
+        backToTop: "Nach oben",
+        prevImage: "Vorheriges Bild",
+        nextImage: "Nächstes Bild",
+        closeImage: "Schließen",
         aboutTitle: "Über mich",
         aboutHeading: "Meine künstlerische Reise",
         aboutP1: "Kunst ist für mich weit mehr als kreativer Ausdruck, ein Handwerk, das Leidenschaft, Können und kontinuierliche Weiterentwicklung vereint. Große Freude bereitet es mir, meine Ideen und Emotionen durch unterschiedliche künstlerische Techniken sichtbar zu machen.",
@@ -25,6 +29,10 @@ const TRANSLATIONS = {
         heroText: "Ontdek mijn collectie kunstwerken die realisme met abstracte elementen verenigen.",
         contact: "Contact",
         unavailable: "Niet meer verkrijgbaar",
+        backToTop: "Naar boven",
+        prevImage: "Vorige afbeelding",
+        nextImage: "Volgende afbeelding",
+        closeImage: "Sluiten",
         aboutTitle: "Over mij",
         aboutHeading: "Mijn artistieke reis",
         aboutP1: "Kunst is voor mij veel meer dan creatieve expressie: een ambacht dat passie, vakmanschap en voortdurende ontwikkeling verenigt. Het geeft mij veel vreugde om mijn ideeën en emoties zichtbaar te maken via uiteenlopende artistieke technieken.",
@@ -40,6 +48,10 @@ const TRANSLATIONS = {
         heroText: "Découvrez ma collection d'œuvres d'art qui allient réalisme et éléments abstraits.",
         contact: "Contact",
         unavailable: "Plus disponible",
+        backToTop: "En haut de page",
+        prevImage: "Image précédente",
+        nextImage: "Image suivante",
+        closeImage: "Fermer",
         aboutTitle: "À propos de moi",
         aboutHeading: "Mon parcours artistique",
         aboutP1: "L'art est pour moi bien plus qu'une expression créative : un artisanat qui unit passion, savoir-faire et perfectionnement continu. Je prends grand plaisir à rendre visibles mes idées et mes émotions à travers diverses techniques artistiques.",
@@ -55,6 +67,10 @@ const TRANSLATIONS = {
         heroText: "Discover my collection of artworks that combine realism with abstract elements.",
         contact: "Contact",
         unavailable: "No longer available",
+        backToTop: "Back to top",
+        prevImage: "Previous image",
+        nextImage: "Next image",
+        closeImage: "Close",
         aboutTitle: "About Me",
         aboutHeading: "My Artistic Journey",
         aboutP1: "For me, art is far more than creative expression: it is a craft that unites passion, skill and continuous development. It gives me great joy to make my ideas and emotions visible through a variety of artistic techniques.",
@@ -85,6 +101,12 @@ function applyLanguage(lang) {
     document.querySelectorAll("[data-i18n]").forEach(el => {
         const text = TRANSLATIONS[lang][el.dataset.i18n];
         if (text) el.textContent = text;
+    });
+
+    // Übersetzte aria-Labels, z. B. für die Lightbox-Pfeile
+    document.querySelectorAll("[data-i18n-aria]").forEach(el => {
+        const text = TRANSLATIONS[lang][el.dataset.i18nAria];
+        if (text) el.setAttribute("aria-label", text);
     });
 
     document.querySelectorAll(".lang-switch button").forEach(btn => {

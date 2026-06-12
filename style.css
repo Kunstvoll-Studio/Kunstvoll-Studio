@@ -1,3 +1,10 @@
+/* Sanftes Scrollen zu Ankern; Versatz, damit die klebende Navigation
+   das Sprungziel nicht verdeckt */
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 70px;
+}
+
 body {
     font-family: 'Roboto', sans-serif;
     margin: 0;
@@ -5,6 +12,25 @@ body {
     background-color: #f0f0f0;
     color: #333;
     line-height: 1.6;
+    animation: page-fade 0.5s ease both; /* weiches Erscheinen beim Seitenwechsel */
+}
+
+@keyframes page-fade {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Markierter Text in den Seitenfarben */
+::selection {
+    background-color: #2a5298;
+    color: #fff;
+}
+
+/* Sichtbarer Fokusring für Tastaturbedienung */
+a:focus-visible,
+button:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
 }
 /*
 header {
@@ -63,16 +89,29 @@ header h_name {
     display: inline-block;
 }
 */
+/* Navigation bleibt beim Scrollen oben kleben; den "scrolled"-Zustand
+   (leicht transparent + Blur + tieferer Schatten) setzt effects.js */
 nav {
-    position: relative;
+    position: sticky;
+    top: 0;
+    z-index: 100;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     background-color: #2a5298;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+nav.scrolled {
+    background-color: rgba(42, 82, 152, 0.88);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
 }
 
 nav a {
+    position: relative; /* Bezugspunkt für die animierte Unterstreichung */
     color: white;
     padding: 15px 20px;
     text-decoration: none;
@@ -82,6 +121,25 @@ nav a {
 
 nav a:hover {
     background-color: #1e3c72;
+}
+
+/* Unterstreichung wächst beim Hovern von links nach rechts */
+nav a::after {
+    content: "";
+    position: absolute;
+    left: 20px;
+    right: 20px;
+    bottom: 9px;
+    height: 2px;
+    border-radius: 1px;
+    background-color: #fff;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+}
+
+nav a:hover::after {
+    transform: scaleX(1);
 }
 
 /* Sprachumschalter (DE / NL / FR) */
@@ -178,54 +236,134 @@ nav a:hover {
     width: 100%;
     height: 500px; /* Set the desired height for the hero section */
     overflow: hidden;
+    border-radius: 10px;
 }
 
-.slides {
-    display: flex;
-    transition: transform 0.5s ease-in-out;
-}
-
+/* Folien liegen übereinander und werden weich überblendet;
+   die aktive Folie setzt index.html per "active"-Klasse */
 .slide {
-    min-width: 100%;
-    height: 500px; /* Same as the .slider height */
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 1.2s ease-in-out;
 }
 
+.slide.active {
+    opacity: 1;
+}
+
+/* Ken-Burns-Effekt: die sichtbare Folie zoomt ganz langsam hinein;
+   als Transition statt Animation, damit beim Folienwechsel nichts springt */
 .slide img {
     width: 100%;
     height: 100%;
     object-fit: cover; /* Ensures the image covers the whole area without distorting */
+    transform: scale(1);
+    transition: transform 8s ease-out;
 }
 
-/* CSS für das modale Popup */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    padding-top: 50px;
+.slide.active img {
+    transform: scale(1.07);
+}
+
+/* Punkte-Navigation des Sliders */
+.slider-dots {
+    position: absolute;
     left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.9); /* Transparente Hintergrundfarbe */
+    right: 0;
+    bottom: 12px;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+.slider-dots button {
+    width: 11px;
+    height: 11px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.55);
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.slider-dots button:hover {
+    background-color: rgba(255, 255, 255, 0.85);
+}
+
+.slider-dots button.active {
+    background-color: #fff;
+    transform: scale(1.25);
+}
+
+/* Lightbox: blendet weich ein, Bild zoomt leicht auf;
+   geöffnet/geschlossen wird über die "open"-Klasse (index.html) */
+.modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.92);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s;
+}
+
+.modal.open {
+    opacity: 1;
+    visibility: visible;
 }
 
 .modal-content {
-    margin: auto;
     display: block;
-    width: 80%;
-    max-width: 700px;
+    max-width: min(84vw, 900px);
+    max-height: 76vh;
     background-color: white; /* Weißer Hintergrund für das Bild */
     border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); /* Schatten für das Popup */
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.6);
+    transform: scale(0.92);
+    transition: transform 0.3s ease;
+}
+
+.modal.open .modal-content {
+    transform: scale(1);
+}
+
+/* Titel und Maße unter dem Bild */
+.modal-caption {
+    margin-top: 14px;
+    padding: 0 60px; /* nicht mit den Pfeilen kollidieren */
+    color: #eee;
+    font-size: 1.05em;
+    letter-spacing: 0.02em;
+    text-align: center;
+}
+
+.modal-caption .dims {
+    color: #aaa;
+    font-size: 0.85em;
+}
+
+/* Position in der Galerie, z. B. "3 / 42" */
+.modal-counter {
+    position: absolute;
+    top: 14px;
+    left: 20px;
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 0.95em;
 }
 
 .close {
     position: absolute;
+    z-index: 2;
     top: 10px;
     right: 25px;
-    color: rgba(121, 121, 121, 0.674); /* Farbe für das Schließen-Symbol */
+    color: rgba(255, 255, 255, 0.7);
     font-size: 35px;
     font-weight: bold;
     transition: 0.3s;
@@ -233,14 +371,48 @@ nav a:hover {
 
 .close:hover,
 .close:focus {
-    color: #86868665;
+    color: #fff;
     text-decoration: none;
     cursor: pointer;
 }
 
-.modal img {
-    width: 100%;
-    height: auto;
+/* Vor/Zurück-Pfeile der Lightbox */
+.modal-nav {
+    position: absolute;
+    top: 50%;
+    z-index: 2;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border: none;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 26px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.modal-nav:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+}
+
+.modal-prev { left: 18px; }
+.modal-next { right: 18px; }
+
+@media (max-width: 600px) {
+    .modal-nav {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+    }
+    .modal-prev { left: 8px; }
+    .modal-next { right: 8px; }
+    .modal-caption { padding: 0 12px; }
 }
 
 
@@ -264,10 +436,44 @@ nav a:hover {
 
 .gallery img {
     width: 100%;
+    height: 100%;
+    object-fit: cover;
     display: block;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.529);
-    transition: box-shadow 0.3s, filter 0.4s;
+    cursor: pointer;
+    opacity: 0; /* wird nach dem Laden weich eingeblendet */
+    transition: box-shadow 0.3s, filter 0.4s, opacity 0.5s ease;
+}
+
+.gallery-media.loaded img {
+    opacity: 1;
+}
+
+/* Schimmer-Platzhalter, solange das Bild noch lädt; das Seitenverhältnis
+   kommt aus dem Dateinamen, damit das Raster nicht springt */
+.gallery-media:not(.loaded) {
+    background: linear-gradient(110deg, #e9e9e9 8%, #f8f8f8 18%, #e9e9e9 33%);
+    background-size: 200% 100%;
+    border-radius: 10px;
+    animation: shimmer 1.4s linear infinite;
+}
+
+@keyframes shimmer {
+    to { background-position-x: -200%; }
+}
+
+/* Einblenden beim Scrollen: Elemente mit .reveal gleiten ins Bild,
+   sobald sie sichtbar werden (gesteuert von effects.js) */
+.reveal {
+    opacity: 0;
+    transform: translateY(26px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 /* Wrapper um Bild + Badge: 3D-Karteneffekt beim Hovern.
@@ -440,4 +646,72 @@ footer {
     bottom: 0;
     width: 100%;
     box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Dünner Lesefortschrittsbalken am oberen Rand (erzeugt von effects.js) */
+.scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 200;
+    height: 3px;
+    width: 0;
+    background: linear-gradient(90deg, #2a5298, #52982a);
+    pointer-events: none;
+}
+
+/* "Nach oben"-Button, erscheint erst nach etwas Scrollen (effects.js) */
+.back-to-top {
+    position: fixed;
+    right: 18px;
+    bottom: 72px; /* über dem fixierten Footer */
+    z-index: 90;
+    width: 46px;
+    height: 46px;
+    border: none;
+    border-radius: 50%;
+    background-color: #2a5298;
+    color: white;
+    font-size: 22px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(12px);
+    transition: opacity 0.3s, transform 0.3s, visibility 0.3s, background-color 0.3s;
+}
+
+.back-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.back-to-top:hover {
+    background-color: #1e3c72;
+}
+
+/* Wer reduzierte Bewegung wünscht, bekommt alle Inhalte ohne Animationen */
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+    body {
+        animation: none;
+    }
+    .reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+    .slide img,
+    .slide.active img {
+        transform: none;
+        transition: none;
+    }
+    .gallery-media,
+    .gallery-media:hover {
+        transform: none;
+        transition: none;
+    }
 }
