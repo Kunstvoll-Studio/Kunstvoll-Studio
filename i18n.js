@@ -12,9 +12,10 @@ const TRANSLATIONS = {
         unavailable: "Nicht mehr erhältlich",
         aboutTitle: "Über mich",
         aboutHeading: "Meine künstlerische Reise",
-        aboutP1: "In meiner Freizeit beschäftige ich mich mit verschiedenen Formen der kreativen Malerei. Für mich ist die Kunst ein Handwerk, ich finde große Freude darin, meine Kreativität durch unterschiedliche künstlerische Techniken auszudrücken.",
-        aboutP2: "Ich lege viel Wert auf die handwerklichen Aspekte meiner Arbeit und genieße den kreativen Prozess. Besonders inspiriert mich die Natur, deren Schönheit und Vielfalt ich in meinen Werken festhalten möchte. Ich bin stets auf der Suche nach neuen Techniken und Ideen, um meinen künstlerischen Ausdruck weiterzuentwickeln.",
-        aboutP3: "Vielen Dank, dass Sie meine Website besuchen. Ich hoffe, Sie haben genauso viel Freude daran, meine Werke zu entdecken, wie ich sie beim Erschaffen habe."
+        aboutP1: "Kunst ist für mich weit mehr als kreativer Ausdruck, ein Handwerk, das Leidenschaft, Können und kontinuierliche Weiterentwicklung vereint. Große Freude bereitet es mir, meine Ideen und Emotionen durch unterschiedliche künstlerische Techniken sichtbar zu machen.",
+        aboutP2: "Dabei arbeite ich bevorzugt mit dem Spachtel, dessen Vielseitigkeit und Ausdruckskraft meinen Werken eine besondere Struktur und Tiefe verleihen. Die handwerklichen Aspekte meiner Arbeit sind für mich von großer Bedeutung, ebenso wie der kreative Prozess selbst, vom ersten Impuls bis zur Vollendung eines Werkes.",
+        aboutP3: "Eine meiner wichtigsten Inspirationsquellen ist die Natur. Ihre Schönheit, Vielfalt und ständige Veränderung spiegeln sich in vielen meiner Arbeiten wieder. Gleichzeitig bin ich stets auf der Suche nach neuen Techniken, Materialien und Ideen, um meinen künstlerischen Ausdruck weiterzuentwickeln und neue Perspektiven zu eröffnen.",
+        aboutP4: "Vielen Dank für Ihren Besuch auf meiner Website. Ich wünsche Ihnen viel Freude beim Entdecken meiner Werke und hoffe, dass sie Sie ebenso inspirieren und berühren, wie mich ihre Entstehung begeistert hat."
     },
     nl: {
         home: "Home",
@@ -26,9 +27,10 @@ const TRANSLATIONS = {
         unavailable: "Niet meer verkrijgbaar",
         aboutTitle: "Over mij",
         aboutHeading: "Mijn artistieke reis",
-        aboutP1: "In mijn vrije tijd houd ik me bezig met verschillende vormen van creatief schilderen. Voor mij is kunst een ambacht; ik vind er veel plezier in om mijn creativiteit via uiteenlopende artistieke technieken uit te drukken.",
-        aboutP2: "Ik hecht veel waarde aan de ambachtelijke aspecten van mijn werk en geniet van het creatieve proces. Vooral de natuur inspireert mij; haar schoonheid en verscheidenheid wil ik in mijn werken vastleggen. Ik ben altijd op zoek naar nieuwe technieken en ideeën om mijn artistieke expressie verder te ontwikkelen.",
-        aboutP3: "Hartelijk dank voor uw bezoek aan mijn website. Ik hoop dat u net zoveel plezier beleeft aan het ontdekken van mijn werken als ik aan het maken ervan."
+        aboutP1: "Kunst is voor mij veel meer dan creatieve expressie: een ambacht dat passie, vakmanschap en voortdurende ontwikkeling verenigt. Het geeft mij veel vreugde om mijn ideeën en emoties zichtbaar te maken via uiteenlopende artistieke technieken.",
+        aboutP2: "Daarbij werk ik bij voorkeur met het paletmes, waarvan de veelzijdigheid en zeggingskracht mijn werken een bijzondere structuur en diepte geven. De ambachtelijke aspecten van mijn werk zijn voor mij van groot belang, net als het creatieve proces zelf – van de eerste impuls tot de voltooiing van een werk.",
+        aboutP3: "Een van mijn belangrijkste inspiratiebronnen is de natuur. Haar schoonheid, verscheidenheid en voortdurende verandering weerspiegelen zich in veel van mijn werken. Tegelijkertijd ben ik altijd op zoek naar nieuwe technieken, materialen en ideeën om mijn artistieke expressie verder te ontwikkelen en nieuwe perspectieven te openen.",
+        aboutP4: "Hartelijk dank voor uw bezoek aan mijn website. Ik wens u veel plezier bij het ontdekken van mijn werken en hoop dat ze u net zo inspireren en raken als het maken ervan mij heeft begeesterd."
     },
     fr: {
         home: "Accueil",
@@ -40,9 +42,10 @@ const TRANSLATIONS = {
         unavailable: "Plus disponible",
         aboutTitle: "À propos de moi",
         aboutHeading: "Mon parcours artistique",
-        aboutP1: "Pendant mon temps libre, je me consacre à différentes formes de peinture créative. Pour moi, l'art est un artisanat ; je prends grand plaisir à exprimer ma créativité à travers diverses techniques artistiques.",
-        aboutP2: "J'attache beaucoup d'importance aux aspects artisanaux de mon travail et j'apprécie le processus créatif. La nature m'inspire particulièrement ; je souhaite capturer sa beauté et sa diversité dans mes œuvres. Je suis toujours à la recherche de nouvelles techniques et idées pour développer mon expression artistique.",
-        aboutP3: "Merci beaucoup de visiter mon site. J'espère que vous prendrez autant de plaisir à découvrir mes œuvres que j'en ai eu à les créer."
+        aboutP1: "L'art est pour moi bien plus qu'une expression créative : un artisanat qui unit passion, savoir-faire et perfectionnement continu. Je prends grand plaisir à rendre visibles mes idées et mes émotions à travers diverses techniques artistiques.",
+        aboutP2: "Je travaille de préférence au couteau à peindre, dont la polyvalence et la force expressive confèrent à mes œuvres une structure et une profondeur particulières. Les aspects artisanaux de mon travail me tiennent particulièrement à cœur, tout comme le processus créatif lui-même, de la première impulsion à l'achèvement d'une œuvre.",
+        aboutP3: "La nature est l'une de mes principales sources d'inspiration. Sa beauté, sa diversité et son évolution permanente se reflètent dans nombre de mes travaux. En même temps, je suis toujours à la recherche de nouvelles techniques, de nouveaux matériaux et de nouvelles idées pour développer mon expression artistique et ouvrir de nouvelles perspectives.",
+        aboutP4: "Merci beaucoup de votre visite sur mon site. Je vous souhaite beaucoup de plaisir à découvrir mes œuvres et j'espère qu'elles vous inspireront et vous toucheront autant que leur création m'a passionné."
     },
     en: {
         home: "Home",
@@ -54,9 +57,10 @@ const TRANSLATIONS = {
         unavailable: "No longer available",
         aboutTitle: "About Me",
         aboutHeading: "My Artistic Journey",
-        aboutP1: "In my free time, I engage in various forms of creative painting. For me, art is a craft; I take great joy in expressing my creativity through a variety of artistic techniques.",
-        aboutP2: "I attach great importance to the craftsmanship of my work and enjoy the creative process. I am particularly inspired by nature, whose beauty and diversity I aim to capture in my works. I am always looking for new techniques and ideas to further develop my artistic expression.",
-        aboutP3: "Thank you very much for visiting my website. I hope you enjoy discovering my works as much as I enjoyed creating them."
+        aboutP1: "For me, art is far more than creative expression: it is a craft that unites passion, skill and continuous development. It gives me great joy to make my ideas and emotions visible through a variety of artistic techniques.",
+        aboutP2: "I prefer to work with the palette knife, whose versatility and expressive power lend my works a distinctive structure and depth. The craftsmanship of my work is of great importance to me, as is the creative process itself – from the first impulse to the completion of a piece.",
+        aboutP3: "Nature is one of my most important sources of inspiration. Its beauty, diversity and constant change are reflected in many of my works. At the same time, I am always searching for new techniques, materials and ideas to further develop my artistic expression and open up new perspectives.",
+        aboutP4: "Thank you very much for visiting my website. I wish you great pleasure in discovering my works and hope they inspire and move you just as much as creating them has delighted me."
     }
 };
 
