@@ -31,6 +31,14 @@ body {
     to   { opacity: 1; }
 }
 
+/* Typografie: elegante Serifenschrift für Überschriften,
+   Roboto bleibt für Fließtext und Bedienelemente */
+h1, h2 {
+    font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+
 /* Markierter Text in den Seitenfarben */
 ::selection {
     background-color: var(--gold);
@@ -79,6 +87,10 @@ header h1 {
 header h_name {
     background-color: rgba(0, 0, 0, 0); /* Hintergrundfarbe der Überschrift mit Transparenz */
     padding: 5px; /* Abstand um die Überschrift */
+    font-family: 'Playfair Display', Georgia, serif;
+    font-style: italic;
+    font-size: 1.1em;
+    letter-spacing: 0.05em;
 }
 
 .hero p {
@@ -360,10 +372,22 @@ nav a:hover::after {
     box-shadow: 0 0 40px rgba(0, 0, 0, 0.6);
     transform: scale(0.92);
     transition: transform 0.3s ease;
+    touch-action: none; /* Pinch/Ziehen übernimmt das eigene Zoom-Skript */
+    cursor: zoom-in;
 }
 
 .modal.open .modal-content {
     transform: scale(1);
+}
+
+/* Gezoomtes Bild: kurze Transition, damit Mausrad und Pinch direkt folgen */
+.modal-content.zoomed {
+    transition: transform 0.12s linear;
+    cursor: grab;
+}
+
+.modal-content.zoomed:active {
+    cursor: grabbing;
 }
 
 /* Titel und Maße unter dem Bild */
@@ -371,14 +395,16 @@ nav a:hover::after {
     margin-top: 14px;
     padding: 0 60px; /* nicht mit den Pfeilen kollidieren */
     color: #eee;
-    font-size: 1.05em;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.2em;
     letter-spacing: 0.02em;
     text-align: center;
 }
 
 .modal-caption .dims {
     color: #aaa;
-    font-size: 0.85em;
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.75em;
 }
 
 /* Position in der Galerie, z. B. "3 / 42" */

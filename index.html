@@ -4,9 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kunstvoll Studio</title>
+    <meta name="description" content="Kunstvoll Studio – Kunstwerke von Ynou: Acryl- und Spachtelbilder zwischen Realismus und Abstraktion. Entdecken Sie die Galerie mit verfügbaren Originalen.">
+    <meta name="theme-color" content="#1c1d22">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Kunstvoll Studio">
+    <meta property="og:title" content="Kunstvoll Studio – Art created @home by Ynou">
+    <meta property="og:description" content="Kunstwerke zwischen Realismus und Abstraktion – entdecken Sie die Galerie von Ynou.">
+    <meta property="og:image" content="https://raw.githubusercontent.com/Kunstvoll-Studio/Kunstvoll-Studio/main/hero1.jpg">
+    <meta name="twitter:card" content="summary_large_image">
 	<link rel="icon" href="favicon.png" type="image/png">
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://wsrv.nl">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <script src="i18n.js" defer></script>
     <script src="effects.js" defer></script>
 </head>
@@ -33,9 +44,10 @@
     <section class="hero">
         <div class="slider">
             <div class="slides">
-                <div class="slide"><img src="hero1.jpg" alt="Banner 1"></div>
-                <div class="slide"><img src="hero2.jpg" alt="Banner 2"></div>
-                <div class="slide"><img src="hero3.jpg" alt="Banner 3"></div>
+                <!-- Verkleinerte WebP-Version über wsrv.nl; bei Ausfall lädt onerror das Original -->
+                <div class="slide"><img src="https://wsrv.nl/?url=https://raw.githubusercontent.com/Kunstvoll-Studio/Kunstvoll-Studio/main/hero1.jpg&w=1600&output=webp&q=80" onerror="this.onerror=null;this.src='hero1.jpg'" alt="Banner 1"></div>
+                <div class="slide"><img src="https://wsrv.nl/?url=https://raw.githubusercontent.com/Kunstvoll-Studio/Kunstvoll-Studio/main/hero2.jpg&w=1600&output=webp&q=80" onerror="this.onerror=null;this.src='hero2.jpg'" alt="Banner 2"></div>
+                <div class="slide"><img src="https://wsrv.nl/?url=https://raw.githubusercontent.com/Kunstvoll-Studio/Kunstvoll-Studio/main/hero3.jpg&w=1600&output=webp&q=80" onerror="this.onerror=null;this.src='hero3.jpg'" alt="Banner 3"></div>
             </div>
             <div class="slider-dots"></div>
         </div>
@@ -73,6 +85,7 @@
     function renderModal() {
         const entry = galleryData[modalIndex];
         if (!entry) return;
+        resetZoom(); // jedes Bild startet ungezoomt
         const modalImg = document.getElementById("img01");
         modalImg.src = entry.src;
         modalImg.alt = entry.title || "";
@@ -99,6 +112,7 @@
     }
 
     function closeModal() {
+        resetZoom();
         document.getElementById("myModal").classList.remove("open");
         document.body.style.overflow = "";
     }
@@ -107,6 +121,45 @@
         if (!galleryData.length) return;
         modalIndex = (modalIndex + direction + galleryData.length) % galleryData.length;
         renderModal();
+    }
+
+    // Zoom in der Lightbox: Mausrad/Doppelklick am Desktop, Pinch am Handy;
+    // gezoomt lässt sich der Ausschnitt mit Maus oder Finger verschieben
+    let zoom = 1, panX = 0, panY = 0;
+
+    function resetZoom() {
+        zoom = 1; panX = 0; panY = 0;
+        const img = document.getElementById("img01");
+        img.style.transform = "";
+        img.classList.remove("zoomed");
+    }
+
+    function applyZoom() {
+        const img = document.getElementById("img01");
+        // Verschiebung begrenzen, damit das Bild nicht aus dem Sichtfeld rutscht
+        const maxX = (zoom - 1) * img.offsetWidth / 2;
+        const maxY = (zoom - 1) * img.offsetHeight / 2;
+        panX = Math.min(maxX, Math.max(-maxX, panX));
+        panY = Math.min(maxY, Math.max(-maxY, panY));
+        img.style.transform = "translate(" + panX + "px, " + panY + "px) scale(" + zoom + ")";
+        img.classList.add("zoomed");
+    }
+
+    function zoomAt(clientX, clientY, factor) {
+        const img = document.getElementById("img01");
+        const newZoom = Math.min(5, Math.max(1, zoom * factor));
+        if (newZoom === 1) { resetZoom(); return; }
+        // Bildmittelpunkt ohne die aktuelle Verschiebung
+        const rect = img.getBoundingClientRect();
+        const baseX = rect.left + rect.width / 2 - panX;
+        const baseY = rect.top + rect.height / 2 - panY;
+        // Der Punkt unter dem Zeiger bleibt beim Zoomen unter dem Zeiger
+        const ux = (clientX - baseX - panX) / zoom;
+        const uy = (clientY - baseY - panY) / zoom;
+        panX = clientX - baseX - ux * newZoom;
+        panY = clientY - baseY - uy * newZoom;
+        zoom = newZoom;
+        applyZoom();
     }
 
 
@@ -154,9 +207,17 @@
         if (!response.ok) throw new Error("GitHub API " + response.status);
         const items = await response.json();
         return items
-            .filter(item => item.type === "file")
-            .map(item => item.name)
-            .filter(name => IMAGE_EXT_RE.test(name) && !EXCLUDE_FILES.has(name));
+            .filter(item => item.type === "file"
+                && IMAGE_EXT_RE.test(item.name)
+                && !EXCLUDE_FILES.has(item.name))
+            .map(item => ({ name: item.name, downloadUrl: item.download_url }));
+    }
+
+    // Verkleinerte WebP-Vorschau über den Bild-Proxy wsrv.nl: das Raster lädt
+    // so nur wenige KB pro Bild, die Lightbox weiterhin das Original
+    function thumbUrl(downloadUrl, width) {
+        return "https://wsrv.nl/?url=" + encodeURIComponent(downloadUrl)
+            + "&w=" + width + "&output=webp&q=78";
     }
 
     function parseFilename(filename) {
@@ -202,9 +263,9 @@
         }
 
         const fragment = document.createDocumentFragment();
-        galleryImages.forEach((filename, index) => {
-            const { title, dims } = parseFilename(filename);
-            const src = encodeURIComponent(filename);
+        galleryImages.forEach((file, index) => {
+            const { title, dims } = parseFilename(file.name);
+            const src = encodeURIComponent(file.name); // Original für die Lightbox
             galleryData.push({ src, title, dims });
 
             const item = document.createElement('div');
@@ -225,19 +286,37 @@
             }
 
             const img = document.createElement('img');
-            img.src = src;
-            img.alt = title || filename;
+            // Das Raster lädt kleine WebP-Vorschauen passend zur Anzeigegröße
+            if (file.downloadUrl) {
+                img.src = thumbUrl(file.downloadUrl, 480);
+                img.srcset = thumbUrl(file.downloadUrl, 480) + ' 480w, '
+                           + thumbUrl(file.downloadUrl, 960) + ' 960w';
+                img.sizes = '(max-width: 640px) 92vw, 300px';
+            } else {
+                img.src = src;
+            }
+            img.alt = title || file.name;
             img.loading = 'lazy';
             img.decoding = 'async';
             img.addEventListener('click', () => openModal(index));
             // Schimmer-Platzhalter beenden, sobald das Bild da ist
             const markLoaded = () => media.classList.add('loaded');
             img.addEventListener('load', markLoaded);
-            img.addEventListener('error', markLoaded);
+            // Fällt der Bild-Proxy aus, das Original direkt laden
+            img.addEventListener('error', () => {
+                if (!img.dataset.fallback) {
+                    img.dataset.fallback = '1';
+                    img.removeAttribute('srcset');
+                    img.removeAttribute('sizes');
+                    img.src = src;
+                } else {
+                    markLoaded(); // auch das Original scheitert: Schimmer beenden
+                }
+            });
             if (img.complete && img.naturalWidth) markLoaded();
             media.appendChild(img);
 
-            if (UNAVAILABLE_FILES.has(filename)) {
+            if (UNAVAILABLE_FILES.has(file.name)) {
                 item.classList.add('unavailable');
                 const badge = document.createElement('div');
                 badge.className = 'badge-unavailable';
@@ -333,14 +412,73 @@
 
         let touchStartX = null;
         modal.addEventListener('touchstart', (e) => {
-            touchStartX = e.touches[0].clientX;
+            // kein Blättern bei Pinch oder gezoomtem Bild
+            touchStartX = (e.touches.length === 1 && zoom === 1)
+                ? e.touches[0].clientX : null;
         }, { passive: true });
         modal.addEventListener('touchend', (e) => {
-            if (touchStartX === null) return;
+            if (touchStartX === null || zoom > 1) return;
             const deltaX = e.changedTouches[0].clientX - touchStartX;
             if (Math.abs(deltaX) > 50) stepModal(deltaX > 0 ? -1 : 1);
             touchStartX = null;
         }, { passive: true });
+
+        // Zoom-Gesten auf dem Lightbox-Bild
+        const modalImg = document.getElementById('img01');
+
+        // Mausrad zoomt zur Zeigerposition
+        modalImg.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            zoomAt(e.clientX, e.clientY, e.deltaY < 0 ? 1.25 : 0.8);
+        }, { passive: false });
+
+        // Doppelklick wechselt zwischen Originalansicht und 2,5-fachem Zoom
+        modalImg.addEventListener('dblclick', (e) => {
+            if (zoom > 1) resetZoom();
+            else zoomAt(e.clientX, e.clientY, 2.5);
+        });
+
+        // natives Bild-Ziehen des Browsers unterbinden
+        modalImg.addEventListener('dragstart', (e) => e.preventDefault());
+
+        // Ein Zeiger verschiebt den gezoomten Ausschnitt, zwei Finger zoomen (Pinch)
+        const activePointers = new Map();
+        let lastPinchDist = null;
+
+        modalImg.addEventListener('pointerdown', (e) => {
+            activePointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+            if (zoom > 1) {
+                e.preventDefault();
+                modalImg.setPointerCapture(e.pointerId);
+            }
+        });
+
+        modalImg.addEventListener('pointermove', (e) => {
+            const prev = activePointers.get(e.pointerId);
+            if (!prev) return;
+            activePointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+
+            if (activePointers.size === 2) {
+                // Pinch: der Abstand beider Finger steuert den Zoom
+                const [a, b] = [...activePointers.values()];
+                const dist = Math.hypot(a.x - b.x, a.y - b.y);
+                if (lastPinchDist) {
+                    zoomAt((a.x + b.x) / 2, (a.y + b.y) / 2, dist / lastPinchDist);
+                }
+                lastPinchDist = dist;
+            } else if (zoom > 1) {
+                panX += e.clientX - prev.x;
+                panY += e.clientY - prev.y;
+                applyZoom();
+            }
+        });
+
+        const endPointer = (e) => {
+            activePointers.delete(e.pointerId);
+            lastPinchDist = null;
+        };
+        modalImg.addEventListener('pointerup', endPointer);
+        modalImg.addEventListener('pointercancel', endPointer);
     });
 
 </script>
