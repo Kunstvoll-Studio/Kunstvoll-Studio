@@ -43,6 +43,20 @@ const TRANSLATIONS = {
         aboutP1: "Pendant mon temps libre, je me consacre à différentes formes de peinture créative. Pour moi, l'art est un artisanat ; je prends grand plaisir à exprimer ma créativité à travers diverses techniques artistiques.",
         aboutP2: "J'attache beaucoup d'importance aux aspects artisanaux de mon travail et j'apprécie le processus créatif. La nature m'inspire particulièrement ; je souhaite capturer sa beauté et sa diversité dans mes œuvres. Je suis toujours à la recherche de nouvelles techniques et idées pour développer mon expression artistique.",
         aboutP3: "Merci beaucoup de visiter mon site. J'espère que vous prendrez autant de plaisir à découvrir mes œuvres que j'en ai eu à les créer."
+    },
+    en: {
+        home: "Home",
+        about: "About",
+        gallery: "Gallery",
+        heroTitle: "Discover the Art of Creativity",
+        heroText: "Discover my collection of artworks that combine realism with abstract elements.",
+        contact: "Contact",
+        unavailable: "No longer available",
+        aboutTitle: "About Me",
+        aboutHeading: "My Artistic Journey",
+        aboutP1: "In my free time, I engage in various forms of creative painting. For me, art is a craft; I take great joy in expressing my creativity through a variety of artistic techniques.",
+        aboutP2: "I attach great importance to the craftsmanship of my work and enjoy the creative process. I am particularly inspired by nature, whose beauty and diversity I aim to capture in my works. I am always looking for new techniques and ideas to further develop my artistic expression.",
+        aboutP3: "Thank you very much for visiting my website. I hope you enjoy discovering my works as much as I enjoyed creating them."
     }
 };
 
