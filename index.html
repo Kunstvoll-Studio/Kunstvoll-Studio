@@ -126,21 +126,28 @@
             const item = document.createElement('div');
             item.className = 'gallery-item';
 
+            // Bild und Badge liegen in einem gemeinsamen Wrapper,
+            // damit beide beim Hovern zusammen skalieren
+            const media = document.createElement('div');
+            media.className = 'gallery-media';
+
             const img = document.createElement('img');
             img.src = encodeURIComponent(filename);
             img.alt = title || filename;
             img.loading = 'lazy';
             img.decoding = 'async';
             img.addEventListener('click', () => showImage(img));
-            item.appendChild(img);
+            media.appendChild(img);
 
             if (UNAVAILABLE_FILES.has(filename)) {
                 item.classList.add('unavailable');
                 const badge = document.createElement('div');
                 badge.className = 'badge-unavailable';
                 badge.textContent = UNAVAILABLE_LABEL;
-                item.appendChild(badge);
+                media.appendChild(badge);
             }
+
+            item.appendChild(media);
 
             if (title) {
                 const overlay = document.createElement('div');

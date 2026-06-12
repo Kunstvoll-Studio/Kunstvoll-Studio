@@ -217,31 +217,67 @@ nav a:hover {
 
 .gallery img {
     width: 100%;
+    display: block;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.529);
-    transition: transform 0.3s, box-shadow 0.3s;
+    transition: box-shadow 0.3s, filter 0.4s;
 }
 
-.gallery img:hover {
+/* Wrapper um Bild + Badge: beide skalieren beim Hovern als Einheit */
+.gallery-media {
+    position: relative;
+    transition: transform 0.3s;
+}
+
+.gallery-media:hover {
     transform: scale(1.1);
+}
+
+.gallery-media:hover img {
     box-shadow: 0 8px 16px rgba(73, 73, 73, 0.404);
 }
 
 /* Hinweis für Bilder, die nicht mehr erhältlich sind */
 .badge-unavailable {
     position: absolute;
-    top: 10px;
-    right: 10px;
-    background-color: rgba(30, 30, 30, 0.8);
-    color: white;
-    padding: 4px 10px;
-    border-radius: 5px;
-    font-size: 0.85em;
+    top: 12px;
+    right: 12px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    background: rgba(20, 20, 20, 0.6);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px); /* Milchglas-Effekt */
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #fff;
+    padding: 5px 12px;
+    border-radius: 999px;
+    font-size: 0.72em;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
     pointer-events: none; /* Klick aufs Bild (Popup) funktioniert weiterhin */
+}
+
+/* Roter Punkt: klassisches Galerie-Symbol für vergebene Werke */
+.badge-unavailable::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background-color: #e05252;
+    box-shadow: 0 0 5px rgba(224, 82, 82, 0.85);
 }
 
 .gallery-item.unavailable img {
     filter: grayscale(35%);
+}
+
+/* Beim Hovern kehrt die volle Farbe zurück */
+.gallery-item.unavailable .gallery-media:hover img {
+    filter: grayscale(0%);
 }
 
 .gallery:hover .overlay {
