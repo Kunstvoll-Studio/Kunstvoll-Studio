@@ -1,3 +1,14 @@
+/* Premium-Farbpalette: Anthrazit + Altgold auf warmem Off-White.
+   Alle Farben zentral hier ändern. */
+:root {
+    --ink: #1c1d22;        /* fast schwarzes Anthrazit: Navigation, Footer */
+    --ink-soft: #2a2b31;   /* hellere Stufe für Hover-Flächen */
+    --gold: #b08d3e;       /* gedämpftes Altgold als Akzent */
+    --gold-light: #cfae63; /* helleres Gold für Verläufe und Hover */
+    --paper: #f7f5f1;      /* warmes Off-White als Seitenhintergrund */
+    --text: #2e2d2a;       /* warmes Dunkelgrau für Fließtext */
+}
+
 /* Sanftes Scrollen zu Ankern; Versatz, damit die klebende Navigation
    das Sprungziel nicht verdeckt */
 html {
@@ -9,8 +20,8 @@ body {
     font-family: 'Roboto', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f0f0f0;
-    color: #333;
+    background-color: var(--paper);
+    color: var(--text);
     line-height: 1.6;
     animation: page-fade 0.5s ease both; /* weiches Erscheinen beim Seitenwechsel */
 }
@@ -22,7 +33,7 @@ body {
 
 /* Markierter Text in den Seitenfarben */
 ::selection {
-    background-color: #2a5298;
+    background-color: var(--gold);
     color: #fff;
 }
 
@@ -57,6 +68,8 @@ header h1 {
 */
 header h1 {
     background-color: rgba(0, 0, 0, 0.7); /* Dunkles Overlay für die Überschrift */
+    border: 1px solid rgba(207, 174, 99, 0.5); /* feine Goldkante */
+    letter-spacing: 0.04em;
     padding: 10px;
     border-radius: 10px;
     max-width: 80%; /* Begrenze die Breite der Überschrift */
@@ -98,13 +111,13 @@ nav {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    background-color: #2a5298;
+    background-color: var(--ink);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: background-color 0.3s, box-shadow 0.3s;
 }
 
 nav.scrolled {
-    background-color: rgba(42, 82, 152, 0.88);
+    background-color: rgba(28, 29, 34, 0.9);
     -webkit-backdrop-filter: blur(8px);
     backdrop-filter: blur(8px);
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
@@ -120,10 +133,10 @@ nav a {
 }
 
 nav a:hover {
-    background-color: #1e3c72;
+    background-color: var(--ink-soft);
 }
 
-/* Unterstreichung wächst beim Hovern von links nach rechts */
+/* Goldene Unterstreichung wächst beim Hovern von links nach rechts */
 nav a::after {
     content: "";
     position: absolute;
@@ -132,7 +145,7 @@ nav a::after {
     bottom: 9px;
     height: 2px;
     border-radius: 1px;
-    background-color: #fff;
+    background-color: var(--gold-light);
     transform: scaleX(0);
     transform-origin: left;
     transition: transform 0.3s ease;
@@ -171,9 +184,9 @@ nav a:hover::after {
 }
 
 .lang-switch button.active {
-    background: white;
-    color: #2a5298;
-    border-color: white;
+    background: var(--gold);
+    color: #fff;
+    border-color: var(--gold);
 }
 
 /* Auf schmalen Bildschirmen rutscht der Umschalter unter die Navigation */
@@ -196,9 +209,28 @@ nav a:hover::after {
     padding: 40px 20px;
 }
 
+/* Kurze Goldlinie unter Abschnittsüberschriften */
+.gallery h2::after,
+.about h2::after,
+.hero h2::after {
+    content: "";
+    display: block;
+    width: 56px;
+    height: 3px;
+    margin-top: 10px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light));
+}
+
+/* In der zentrierten Hero-Sektion sitzt die Linie mittig */
+.hero h2::after {
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .hero {
     position: relative;
-    color: rgb(72, 72, 72);
+    color: var(--text);
     text-align: center;
     padding: 50px 20px;
     border-radius: 30px;
@@ -453,7 +485,7 @@ nav a:hover::after {
 /* Schimmer-Platzhalter, solange das Bild noch lädt; das Seitenverhältnis
    kommt aus dem Dateinamen, damit das Raster nicht springt */
 .gallery-media:not(.loaded) {
-    background: linear-gradient(110deg, #e9e9e9 8%, #f8f8f8 18%, #e9e9e9 33%);
+    background: linear-gradient(110deg, #ebe8e2 8%, #f7f5f1 18%, #ebe8e2 33%);
     background-size: 200% 100%;
     border-radius: 10px;
     animation: shimmer 1.4s linear infinite;
@@ -638,7 +670,7 @@ nav a:hover::after {
 
 
 footer {
-    background-color: #52982a;
+    background-color: var(--ink);
     color: white;
     text-align: center;
     padding: 1px 0;
@@ -656,7 +688,7 @@ footer {
     z-index: 200;
     height: 3px;
     width: 0;
-    background: linear-gradient(90deg, #2a5298, #52982a);
+    background: linear-gradient(90deg, var(--gold), var(--gold-light));
     pointer-events: none;
 }
 
@@ -670,7 +702,7 @@ footer {
     height: 46px;
     border: none;
     border-radius: 50%;
-    background-color: #2a5298;
+    background-color: var(--ink);
     color: white;
     font-size: 22px;
     cursor: pointer;
@@ -688,7 +720,7 @@ footer {
 }
 
 .back-to-top:hover {
-    background-color: #1e3c72;
+    background-color: var(--gold);
 }
 
 /* Wer reduzierte Bewegung wünscht, bekommt alle Inhalte ohne Animationen */
