@@ -3,29 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Me</title>
+    <title data-i18n="aboutTitle">Über mich</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <script src="i18n.js" defer></script>
 </head>
 <body>
 
 <header>
-    <h1>About Me</h1>
+    <h1 data-i18n="aboutTitle">Über mich</h1>
 </header>
 
 <nav>
-    <a href="index.html#home">Home</a>
-    <a href="about.html">About</a>
-    <a href="index.html#gallery">Gallery</a>
-   <!-- <a href="index.html#contact">Contact</a> -->
+    <a href="index.html#home" data-i18n="home">Home</a>
+    <a href="about.html" data-i18n="about">Über mich</a>
+    <a href="index.html#gallery" data-i18n="gallery">Galerie</a>
+    <div class="lang-switch">
+        <button type="button" data-lang="de">DE</button>
+        <button type="button" data-lang="nl">NL</button>
+        <button type="button" data-lang="fr">FR</button>
+    </div>
 </nav>
 
 <div class="container">
     <section class="about">
-        <h2>Meine künstlerische Reise</h2>
-        <p>In meiner Freizeit beschäftige ich mich mit verschiedenen Formen der kreativen Malerei. Für mich ist die Kunst ein Handwerk, ich finde große Freude darin, meine Kreativität durch unterschiedliche künstlerische Techniken auszudrücken.
-        <p>Ich lege viel Wert auf die handwerklichen Aspekte meiner Arbeit und genieße den kreativen Prozess. Besonders inspiriert mich die Natur, deren Schönheit und Vielfalt ich in meinen Werken festhalten möchte. Ich bin stets auf der Suche nach neuen Techniken und Ideen, um meinen künstlerischen Ausdruck weiterzuentwickeln.
-        <p>Vielen Dank, dass Sie meine Website besuchen. Ich hoffe, Sie haben genauso viel Freude daran, meine Werke zu entdecken, wie ich sie beim Erschaffen habe.</p>
+        <h2 data-i18n="aboutHeading">Meine künstlerische Reise</h2>
+        <p data-i18n="aboutP1">In meiner Freizeit beschäftige ich mich mit verschiedenen Formen der kreativen Malerei. Für mich ist die Kunst ein Handwerk, ich finde große Freude darin, meine Kreativität durch unterschiedliche künstlerische Techniken auszudrücken.</p>
+        <p data-i18n="aboutP2">Ich lege viel Wert auf die handwerklichen Aspekte meiner Arbeit und genieße den kreativen Prozess. Besonders inspiriert mich die Natur, deren Schönheit und Vielfalt ich in meinen Werken festhalten möchte. Ich bin stets auf der Suche nach neuen Techniken und Ideen, um meinen künstlerischen Ausdruck weiterzuentwickeln.</p>
+        <p data-i18n="aboutP3">Vielen Dank, dass Sie meine Website besuchen. Ich hoffe, Sie haben genauso viel Freude daran, meine Werke zu entdecken, wie ich sie beim Erschaffen habe.</p>
     </section>
 </div>
 

@@ -7,6 +7,7 @@
 	<link rel="icon" href="favicon.png" type="image/png">
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <script src="i18n.js" defer></script>
 </head>
 <body>
 
@@ -16,9 +17,14 @@
 </header>
 
 <nav>
-    <a href="#home">Home</a>
-    <a href="about.html">About</a>
-    <a href="#gallery">Gallery</a>
+    <a href="#home" data-i18n="home">Home</a>
+    <a href="about.html" data-i18n="about">Über mich</a>
+    <a href="#gallery" data-i18n="gallery">Galerie</a>
+    <div class="lang-switch">
+        <button type="button" data-lang="de">DE</button>
+        <button type="button" data-lang="nl">NL</button>
+        <button type="button" data-lang="fr">FR</button>
+    </div>
 </nav>
 
 <div class="container" id="home">
@@ -30,15 +36,15 @@
                 <div class="slide"><img src="hero3.jpg" alt="Banner 3"></div>
             </div>
         </div>
-        <h2>Discover the Art of Creativity</h2>
-        <p>Entdecken Sie meine Sammlung von Kunstwerken, die Realismus mit abstrakten Elementen vereinen.</p>
-        <p>&#128231; Kontakt: ynou.kunstvoll@gmail.com</p>
+        <h2 data-i18n="heroTitle">Entdecken Sie die Kunst der Kreativität</h2>
+        <p data-i18n="heroText">Entdecken Sie meine Sammlung von Kunstwerken, die Realismus mit abstrakten Elementen vereinen.</p>
+        <p>&#128231; <span data-i18n="contact">Kontakt</span>: ynou.kunstvoll@gmail.com</p>
     </section>
 </div>
 
 <div class="container" id="gallery">
     <section class="gallery">
-        <h2>Gallery</h2>
+        <h2 data-i18n="gallery">Galerie</h2>
         <div class="gallery-grid"></div>
     </section>
 </div>
@@ -86,7 +92,6 @@
     "Meer__50x50x1.jpg",
     "Boa__120x100x4.jpg",
     ]);
-    const UNAVAILABLE_LABEL = "Nicht mehr erhältlich";
 
     async function loadImageList() {
         const response = await fetch(REPO_CONTENTS_URL);
@@ -143,7 +148,8 @@
                 item.classList.add('unavailable');
                 const badge = document.createElement('div');
                 badge.className = 'badge-unavailable';
-                badge.textContent = UNAVAILABLE_LABEL;
+                badge.dataset.i18n = 'unavailable'; // wird beim Sprachwechsel mit übersetzt
+                badge.textContent = t('unavailable');
                 media.appendChild(badge);
             }
 
