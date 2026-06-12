@@ -296,18 +296,101 @@ nav a:hover::after {
     opacity: 1;
 }
 
-/* Ken-Burns-Effekt: die sichtbare Folie zoomt ganz langsam hinein;
-   als Transition statt Animation, damit beim Folienwechsel nichts springt */
+/* Ken-Burns-Effekt: jede Folie bekommt ihre eigene langsame Kamerafahrt;
+   als Transition statt Animation, damit beim Folienwechsel nichts springt.
+   Die Zoomstufe deckt die Verschiebung ab, es blitzen keine Ränder auf. */
 .slide img {
     width: 100%;
     height: 100%;
     object-fit: cover; /* Ensures the image covers the whole area without distorting */
-    transform: scale(1);
-    transition: transform 8s ease-out;
+    transform: scale(1.02);
+    transition: transform 9s ease-out;
 }
 
-.slide.active img {
-    transform: scale(1.07);
+.slide:nth-child(1).active img {
+    transform: scale(1.09) translateX(1.5%); /* hineinzoomen, leicht nach rechts */
+}
+
+.slide:nth-child(2).active img {
+    transform: scale(1.1) translate(-1.5%, 1%); /* diagonal nach links unten */
+}
+
+.slide:nth-child(3).active img {
+    transform: scale(1.09) translateY(-1.5%); /* langsam nach oben */
+}
+
+/* Vignette: ruhiger dunkler Rand bindet die Fotos an die Anthrazit-Palette */
+.slider-vignette {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: radial-gradient(ellipse at center,
+                transparent 55%, rgba(28, 29, 34, 0.38) 100%);
+}
+
+/* Goldener Lichtstreif zieht in Intervallen über das Bild,
+   wie Licht, das über ein Gemälde wandert */
+.slider-glow {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.slider-glow::before {
+    content: "";
+    position: absolute;
+    top: -20%;
+    bottom: -20%;
+    left: -60%;
+    width: 50%;
+    background: linear-gradient(105deg,
+                transparent,
+                rgba(255, 243, 214, 0.10) 40%,
+                rgba(207, 174, 99, 0.20) 50%,
+                rgba(255, 243, 214, 0.10) 60%,
+                transparent);
+    transform: translateX(0) skewX(-12deg);
+    animation: hero-glow 9s ease-in-out infinite;
+}
+
+@keyframes hero-glow {
+    0%        { transform: translateX(0) skewX(-12deg); }
+    60%, 100% { transform: translateX(440%) skewX(-12deg); }
+}
+
+/* Goldstaub: wenige, langsam aufsteigende Lichtpunkte (erzeugt index.html) */
+.slider-particles {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.slider-particles span {
+    position: absolute;
+    bottom: -12px;
+    width: var(--size, 4px);
+    height: var(--size, 4px);
+    border-radius: 50%;
+    background: radial-gradient(circle,
+                rgba(255, 236, 180, 0.9),
+                rgba(207, 174, 99, 0.35) 60%,
+                transparent 70%);
+    filter: blur(0.5px);
+    opacity: 0;
+    animation: hero-particle var(--dur, 12s) linear infinite;
+    animation-delay: var(--delay, 0s);
+}
+
+@keyframes hero-particle {
+    0%   { transform: translate(0, 0); opacity: 0; }
+    12%  { opacity: var(--alpha, 0.45); }
+    85%  { opacity: var(--alpha, 0.45); }
+    100% { transform: translate(var(--driftX, 0px), -560px); opacity: 0; }
 }
 
 /* Punkte-Navigation des Sliders */
@@ -766,6 +849,11 @@ footer {
     .slide.active img {
         transform: none;
         transition: none;
+    }
+    /* Lichtstreif und Goldstaub bewegen sich nur – also ganz ausblenden */
+    .slider-glow,
+    .slider-particles {
+        display: none;
     }
     .gallery-media,
     .gallery-media:hover {

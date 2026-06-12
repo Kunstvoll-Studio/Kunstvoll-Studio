@@ -49,6 +49,11 @@
                 <div class="slide"><img src="https://wsrv.nl/?url=https://raw.githubusercontent.com/Kunstvoll-Studio/Kunstvoll-Studio/main/hero2.jpg&w=1600&output=webp&q=80" onerror="this.onerror=null;this.src='hero2.jpg'" alt="Banner 2"></div>
                 <div class="slide"><img src="https://wsrv.nl/?url=https://raw.githubusercontent.com/Kunstvoll-Studio/Kunstvoll-Studio/main/hero3.jpg&w=1600&output=webp&q=80" onerror="this.onerror=null;this.src='hero3.jpg'" alt="Banner 3"></div>
             </div>
+            <!-- Animations-Ebenen über den Folien: Vignette, goldener
+                 Lichtstreif und Goldstaub (Partikel erzeugt das Skript) -->
+            <div class="slider-vignette" aria-hidden="true"></div>
+            <div class="slider-glow" aria-hidden="true"></div>
+            <div class="slider-particles" aria-hidden="true"></div>
             <div class="slider-dots"></div>
         </div>
         <h2 data-i18n="heroTitle">Entdecken Sie die Kunst der Kreativität</h2>
@@ -387,13 +392,30 @@
 
             function restartTimer() {
                 clearInterval(timer);
-                timer = setInterval(nextSlide, 5000);
+                timer = setInterval(nextSlide, 6500);
             }
 
             goToSlide(0);
             restartTimer();
             slider.addEventListener('mouseenter', () => clearInterval(timer));
             slider.addEventListener('mouseleave', restartTimer);
+
+            // Goldstaub: wenige, langsam aufsteigende Lichtpunkte mit
+            // zufälliger Größe, Bahn und Geschwindigkeit (Stil: Goldakzent)
+            const particleWrap = document.querySelector('.slider-particles');
+            const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            if (particleWrap && !reducedMotion) {
+                for (let i = 0; i < 9; i++) {
+                    const p = document.createElement('span');
+                    p.style.left = (4 + Math.random() * 92) + '%';
+                    p.style.setProperty('--size', (3 + Math.random() * 3).toFixed(1) + 'px');
+                    p.style.setProperty('--dur', (10 + Math.random() * 9).toFixed(1) + 's');
+                    p.style.setProperty('--delay', (Math.random() * 12).toFixed(1) + 's');
+                    p.style.setProperty('--driftX', ((Math.random() - 0.5) * 80).toFixed(0) + 'px');
+                    p.style.setProperty('--alpha', (0.25 + Math.random() * 0.35).toFixed(2));
+                    particleWrap.appendChild(p);
+                }
+            }
         }
 
         // Lightbox: Klick auf den dunklen Hintergrund schließt,
