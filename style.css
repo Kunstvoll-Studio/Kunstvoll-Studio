@@ -227,6 +227,23 @@ nav a:hover {
     box-shadow: 0 8px 16px rgba(73, 73, 73, 0.404);
 }
 
+/* Hinweis für Bilder, die nicht mehr erhältlich sind */
+.badge-unavailable {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: rgba(30, 30, 30, 0.8);
+    color: white;
+    padding: 4px 10px;
+    border-radius: 5px;
+    font-size: 0.85em;
+    pointer-events: none; /* Klick aufs Bild (Popup) funktioniert weiterhin */
+}
+
+.gallery-item.unavailable img {
+    filter: grayscale(35%);
+}
+
 .gallery:hover .overlay {
     display: block; /* oder 'inline', 'inline-block', je nachdem, was Sie bevorzugen */
 }

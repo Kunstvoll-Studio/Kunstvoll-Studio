@@ -79,6 +79,15 @@
     const IMAGE_EXT_RE = /\.(jpe?g|png|gif|webp)$/i;
     const REPO_CONTENTS_URL = "https://api.github.com/repos/Kunstvoll-Studio/Kunstvoll-Studio/contents/";
 
+    // Bilder, die nicht mehr erhältlich sind: Dateinamen hier eintragen
+    // (genau wie im Repository, inkl. Endung). Am Bild erscheint dann ein Hinweis.
+    // Beispiel: "Meer__50x50x1.jpg",
+    const UNAVAILABLE_FILES = new Set([
+    "Meer__50x50x1.jpg",
+    "Boa__120x100x4.jpg",
+    ]);
+    const UNAVAILABLE_LABEL = "Nicht mehr erhältlich";
+
     async function loadImageList() {
         const response = await fetch(REPO_CONTENTS_URL);
         if (!response.ok) throw new Error("GitHub API " + response.status);
@@ -124,6 +133,14 @@
             img.decoding = 'async';
             img.addEventListener('click', () => showImage(img));
             item.appendChild(img);
+
+            if (UNAVAILABLE_FILES.has(filename)) {
+                item.classList.add('unavailable');
+                const badge = document.createElement('div');
+                badge.className = 'badge-unavailable';
+                badge.textContent = UNAVAILABLE_LABEL;
+                item.appendChild(badge);
+            }
 
             if (title) {
                 const overlay = document.createElement('div');
