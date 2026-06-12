@@ -130,6 +130,27 @@
         return { title: base.slice(0, sep), dims: dims + ' cm' };
     }
 
+    // 3D-Karteneffekt: kippt die Karte je nach Mausposition und setzt die
+    // CSS-Variablen, die style.css für Transform und Glanzlicht auswertet
+    const TILT_MAX = 10; // maximaler Kippwinkel in Grad
+
+    function enableTilt(media) {
+        media.addEventListener('pointermove', (e) => {
+            if (e.pointerType !== 'mouse') return; // kein Kippen beim Scrollen auf Touchgeräten
+            const rect = media.getBoundingClientRect();
+            const px = (e.clientX - rect.left) / rect.width;  // 0 = links, 1 = rechts
+            const py = (e.clientY - rect.top) / rect.height;  // 0 = oben, 1 = unten
+            media.style.setProperty('--ry', ((px - 0.5) * 2 * TILT_MAX).toFixed(2) + 'deg');
+            media.style.setProperty('--rx', ((0.5 - py) * 2 * TILT_MAX).toFixed(2) + 'deg');
+            media.style.setProperty('--mx', (px * 100).toFixed(1) + '%');
+            media.style.setProperty('--my', (py * 100).toFixed(1) + '%');
+        });
+        media.addEventListener('pointerleave', () => {
+            media.style.removeProperty('--rx');
+            media.style.removeProperty('--ry');
+        });
+    }
+
     async function buildGallery() {
         const grid = document.querySelector('.gallery-grid');
         if (!grid) return;
@@ -150,7 +171,7 @@
             item.className = 'gallery-item';
 
             // Bild und Badge liegen in einem gemeinsamen Wrapper,
-            // damit beide beim Hovern zusammen skalieren
+            // damit beide beim Hovern zusammen kippen und skalieren
             const media = document.createElement('div');
             media.className = 'gallery-media';
 
@@ -171,6 +192,7 @@
                 media.appendChild(badge);
             }
 
+            enableTilt(media);
             item.appendChild(media);
 
             if (title) {

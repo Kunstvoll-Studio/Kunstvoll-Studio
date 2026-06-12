@@ -270,18 +270,43 @@ nav a:hover {
     transition: box-shadow 0.3s, filter 0.4s;
 }
 
-/* Wrapper um Bild + Badge: beide skalieren beim Hovern als Einheit */
+/* Wrapper um Bild + Badge: 3D-Karteneffekt beim Hovern.
+   --rx / --ry (Kippwinkel) und --mx / --my (Glanzlicht-Position)
+   werden per JavaScript aus der Mausposition gesetzt */
 .gallery-media {
     position: relative;
-    transition: transform 0.3s;
+    transform: perspective(800px)
+               rotateX(var(--rx, 0deg))
+               rotateY(var(--ry, 0deg))
+               scale(var(--scale, 1));
+    transition: transform 0.4s ease; /* sanftes Zurückkippen beim Verlassen */
+    will-change: transform;
 }
 
 .gallery-media:hover {
-    transform: scale(1.1);
+    --scale: 1.08;
+    transition: transform 0.1s ease-out; /* folgt der Maus nahezu direkt */
 }
 
 .gallery-media:hover img {
-    box-shadow: 0 8px 16px rgba(73, 73, 73, 0.404);
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.45);
+}
+
+/* Glanzlicht, das der Maus über die Karte folgt */
+.gallery-media::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 10px;
+    background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%),
+                rgba(255, 255, 255, 0.28), transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+}
+
+.gallery-media:hover::after {
+    opacity: 1;
 }
 
 /* Hinweis für Bilder, die nicht mehr erhältlich sind:
