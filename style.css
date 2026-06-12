@@ -237,27 +237,26 @@ nav a:hover {
     box-shadow: 0 8px 16px rgba(73, 73, 73, 0.404);
 }
 
-/* Hinweis für Bilder, die nicht mehr erhältlich sind */
+/* Hinweis für Bilder, die nicht mehr erhältlich sind:
+   Verlaufsstreifen am unteren Bildrand, kann nie über das Bild hinausragen */
 .badge-unavailable {
     position: absolute;
-    top: 12px;
-    right: 12px;
+    left: 0;
+    right: 0;
+    bottom: 0;
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 7px;
-    background: rgba(20, 20, 20, 0.6);
-    -webkit-backdrop-filter: blur(6px);
-    backdrop-filter: blur(6px); /* Milchglas-Effekt */
-    border: 1px solid rgba(255, 255, 255, 0.25);
+    padding: 26px 8px 10px; /* großes oberes Padding für den weichen Verlauf */
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.78) 0%, rgba(0, 0, 0, 0.45) 55%, transparent 100%);
+    border-radius: 0 0 10px 10px;
     color: #fff;
-    padding: 5px 12px;
-    border-radius: 999px;
-    font-size: 0.72em;
+    font-size: 0.65em;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
-    white-space: nowrap;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+    letter-spacing: 0.06em;
+    text-align: center;
     pointer-events: none; /* Klick aufs Bild (Popup) funktioniert weiterhin */
 }
 
