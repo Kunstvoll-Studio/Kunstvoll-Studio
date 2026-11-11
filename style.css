@@ -217,6 +217,125 @@ nav a:hover::after {
     margin-bottom: 20px; /* Optional: Abstand zwischen den Absätzen */
 }
 
+/* Über-mich-Seite, zweiter Abschnitt "Ausstellungen, Projekte & mehr" */
+.about-more {
+    margin-top: 50px;
+    padding-bottom: 30px; /* letzter Absatz bleibt über dem fixierten Footer sichtbar */
+}
+
+.about h3 {
+    font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+    font-weight: 600;
+    font-size: 1.3em;
+    letter-spacing: 0.02em;
+    line-height: 1.35;
+    margin: 46px 0 16px;
+}
+
+/* Textlinks: dunkle Schrift mit goldener Unterstreichung (gut lesbar auf hellem Grund) */
+.about a {
+    color: var(--ink);
+    font-weight: 700;
+    text-decoration: underline;
+    text-decoration-color: var(--gold);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+    transition: text-decoration-color 0.3s;
+}
+
+.about a:hover {
+    text-decoration-color: var(--gold-light);
+}
+
+.about ul {
+    margin: 0 0 20px;
+    padding-left: 22px;
+    line-height: 1.8;
+}
+
+.about li::marker {
+    color: var(--gold);
+}
+
+/* Ein Ausstellungsort: Name, Adresse und Beschreibung an einer feinen Goldlinie */
+.place {
+    margin-bottom: 26px;
+    padding-left: 18px;
+    border-left: 3px solid var(--gold-light);
+}
+
+.about .place p {
+    margin: 0 0 6px;
+}
+
+/* Adresse bricht als Ganzes um, statt mitten in der Zeile zu trennen */
+.place-address {
+    display: inline-block;
+    color: #5f5d58;
+}
+
+.about-quote {
+    margin: 34px 0;
+    padding: 0 20px;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-style: italic;
+    font-size: 1.25em;
+    line-height: 1.5;
+    text-align: center;
+}
+
+/* Bilder und Katalog: zweispaltig, auf dem Handy untereinander */
+.about-media {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+    gap: 20px;
+    max-width: 900px;
+    margin: 30px auto;
+}
+
+.about-media .wide {
+    grid-column: 1 / -1;
+}
+
+.about-media.single {
+    grid-template-columns: 1fr;
+    max-width: 420px;
+}
+
+.about-media figure {
+    margin: 0;
+}
+
+.about-media img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.35);
+    transition: box-shadow 0.3s, transform 0.3s;
+}
+
+.about-media a:hover img {
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+    transform: translateY(-3px);
+}
+
+.about-media figcaption {
+    margin-top: 12px;
+    text-align: center;
+}
+
+.about-note {
+    margin-top: 46px;
+}
+
+@media (max-width: 600px) {
+    .about-media {
+        grid-template-columns: 1fr;
+    }
+}
+
 .container {
     padding: 40px 20px;
 }
@@ -859,5 +978,8 @@ footer {
     .gallery-media:hover {
         transform: none;
         transition: none;
+    }
+    .about-media a:hover img {
+        transform: none;
     }
 }
